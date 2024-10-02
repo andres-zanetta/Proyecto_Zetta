@@ -26,6 +26,18 @@ namespace Proyecto_Zetta.Server.Controllers
             return await context.Presupuestos.ToListAsync();
         }
 
+        [HttpGet("{id:int}")]
+
+        public async Task<ActionResult<Presupuesto>>Get(int id)
+        {
+            Presupuesto? zetta = await context.Presupuestos.FirstOrDefaultAsync(x => x.Id == id);
+            if(zetta== null)
+            {
+                return NotFound("No se encontro el presupuesto indicado");
+            }
+            return zetta;
+        }
+
         [HttpPost]
 
         public async Task<ActionResult<string>> Post(Presupuesto entidad)
@@ -77,6 +89,24 @@ namespace Proyecto_Zetta.Server.Controllers
                 return BadRequest(e.Message);
             }
 
+        }
+
+
+        [HttpDelete("{id:int}")]
+
+        public async Task<ActionResult> Delete(int id)
+        {
+            var existe = await context.Presupuestos.AnyAsync(x => x.Id == id);
+            if(!existe)
+            {
+                return NotFound($"El Presupuesto {id} no existe.");
+            }
+            Presupuesto EntidadABorrar = new Presupuesto();
+            EntidadABorrar.Id = id;
+
+            context.Remove(EntidadABorrar);
+            await context.SaveChangesAsync();
+            return Ok();
         }
     }
 }
