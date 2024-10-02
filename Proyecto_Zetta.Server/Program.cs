@@ -1,11 +1,22 @@
 using Microsoft.EntityFrameworkCore;
 using Proyecto_Zetta.DB.Data;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 
-builder.Services.AddControllers();
+// Add services to the container.
+builder.Services.AddControllers();//agrega primero
+builder.Services.AddControllers().AddJsonOptions(//agrega primero
+    x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+
+
+
+
+
+
+
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
