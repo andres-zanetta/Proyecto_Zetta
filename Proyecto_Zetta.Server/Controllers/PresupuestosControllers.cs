@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
 using System.Globalization;
+using Proyecto_Zetta.Shared.DTO;
+using Proyecto_Zetta.Server.Repositorio;
 
 
 namespace Proyecto_Zetta.Server.Controllers
@@ -12,25 +14,29 @@ namespace Proyecto_Zetta.Server.Controllers
     [Route("api/Presupuestos")]
     public class PresupuestosControllers : ControllerBase
     {
-        private readonly Context context;
+        private readonly IPresupuestoRepositorio repositorio;
+        private readonly IMapper mapper;
 
-        public PresupuestosControllers(Context context)
+        public PresupuestosControllers(IPresupuestoRepositorio repositorio,
+            IMapper mapper)
         {
-            this.context = context;
+            this.repositorio = repositorio;
+            this.mapper = mapper;
         }
 
         [HttpGet]
 
         public async Task<ActionResult<List<Presupuesto>>> Get()
         {
-            return await context.Presupuestos.ToListAsync();
+            return await repositorio.Select(); 
         }
 
         [HttpGet("{id:int}")]
 
         public async Task<ActionResult<Presupuesto>>Get(int id)
         {
-            Presupuesto? zetta = await context.Presupuestos.FirstOrDefaultAsync(x => x.Id == id);
+
+            Presupuesto? zetta = await repositorio.SelectById(id);
             if(zetta== null)
             {
                 return NotFound("No se encontro el presupuesto indicado");
@@ -40,13 +46,17 @@ namespace Proyecto_Zetta.Server.Controllers
 
         [HttpPost]
 
-        public async Task<ActionResult<string>> Post(Presupuesto entidad)
+        public async Task<ActionResult<int>> Post(CrearPresupuestoDTO entidadDTO)
         {
             try
             {
-                context.Presupuestos.Add(entidad);
-                await context.SaveChangesAsync();
-                return entidad.Estado;
+             
+
+                Presupuesto entidad = mapper.Map<Presupuesto>(entidadDTO); 
+
+
+                
+                return await repositorio.Insert(entidad);
             }
             catch (Exception e)
             {
@@ -64,7 +74,7 @@ namespace Proyecto_Zetta.Server.Controllers
             {
                 return BadRequest("Datos Incorrectos");
             }
-            var zetta = await context.Presupuestos.Where(e => e.Id == id).FirstOrDefaultAsync();
+            var zetta = await repositorio.SelectById(id);
 
             if (zetta == null)
             {
@@ -79,8 +89,8 @@ namespace Proyecto_Zetta.Server.Controllers
 
             try
             {
-                context.Presupuestos.Update(zetta);
-                await context.SaveChangesAsync();
+                await repositorio.Update(id, zetta);
+             
                 return Ok();
             }
             catch (Exception e)
@@ -96,16 +106,17 @@ namespace Proyecto_Zetta.Server.Controllers
 
         public async Task<ActionResult> Delete(int id)
         {
-            var existe = await context.Presupuestos.AnyAsync(x => x.Id == id);
+            var existe = await repositorio.Existe(id);
             if(!existe)
             {
                 return NotFound($"El Presupuesto {id} no existe.");
             }
-            Presupuesto EntidadABorrar = new Presupuesto();
-            EntidadABorrar.Id = id;
+            if(await repositorio.Delete(id))
+            {
+                return Ok();
+            }
 
-            context.Remove(EntidadABorrar);
-            await context.SaveChangesAsync();
+            await repositorio.Delete(id);
             return Ok();
         }
     }

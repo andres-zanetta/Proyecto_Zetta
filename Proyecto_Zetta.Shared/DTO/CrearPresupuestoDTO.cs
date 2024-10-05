@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Proyecto_Zetta.Shared.DTO
 {
-     class CrearPresupuestoDTO
+     public class CrearPresupuestoDTO
      {
         [Required(ErrorMessage = "El Estado del presupuesto es obligatorio.")]
         public string Estado { get; set; }
