@@ -51,11 +51,8 @@ namespace Proyecto_Zetta.Server.Controllers
             try
             {
              
-
                 Presupuesto entidad = mapper.Map<Presupuesto>(entidadDTO); 
 
-
-                
                 return await repositorio.Insert(entidad);
             }
             catch (Exception e)
