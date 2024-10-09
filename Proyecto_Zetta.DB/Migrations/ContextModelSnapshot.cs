@@ -17,7 +17,7 @@ namespace Proyecto_Zetta.DB.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.7")
+                .HasAnnotation("ProductVersion", "8.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -29,6 +29,9 @@ namespace Proyecto_Zetta.DB.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("Aceptado")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Apellido")
                         .IsRequired()
@@ -77,6 +80,9 @@ namespace Proyecto_Zetta.DB.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<bool>("Aceptado")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasMaxLength(30)
@@ -94,6 +100,9 @@ namespace Proyecto_Zetta.DB.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("Aceptado")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Actividad")
                         .IsRequired()
@@ -140,6 +149,9 @@ namespace Proyecto_Zetta.DB.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<bool>("Aceptado")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Descripcion")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
@@ -169,6 +181,9 @@ namespace Proyecto_Zetta.DB.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("Aceptado")
+                        .HasColumnType("bit");
 
                     b.Property<string>("AnexarServicio")
                         .HasMaxLength(45)
@@ -216,6 +231,9 @@ namespace Proyecto_Zetta.DB.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<bool>("Aceptado")
+                        .HasColumnType("bit");
+
                     b.Property<int>("ClienteId")
                         .HasColumnType("int");
 
@@ -260,6 +278,9 @@ namespace Proyecto_Zetta.DB.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("Aceptado")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Descripcion")
                         .HasMaxLength(100)
