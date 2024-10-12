@@ -31,12 +31,12 @@ namespace Proyecto_Zetta.Server.Controllers
             return await repositorio.Select(); 
         }
 
-        [HttpGet("{id:int}")]
+        [HttpGet("GetById/{id:int}")]
 
-        public async Task<ActionResult<Presupuesto>>Get(int id)
+        public async Task<ActionResult<Presupuesto>>GetById(int id)
         {
 
-            Presupuesto? zetta = await repositorio.SelectById(id);
+            var zetta = await repositorio.SelectById(id);
             if(zetta== null)
             {
                 return NotFound("No se encontro el presupuesto indicado");
@@ -46,50 +46,62 @@ namespace Proyecto_Zetta.Server.Controllers
 
         [HttpPost]
 
-        public async Task<ActionResult<int>> Post(CrearPresupuestoDTO entidadDTO)
+        public async Task<ActionResult<int>> Post( CrearPresupuestoDTO entidadDTO)
         {
+            
             try
             {
-             
-                Presupuesto entidad = mapper.Map<Presupuesto>(entidadDTO); 
+                Presupuesto entidad = mapper.Map<Presupuesto>(entidadDTO);
 
                 return await repositorio.Insert(entidad);
+             
             }
+
+
             catch (Exception e)
             {
-
-                return BadRequest(e.Message);
+                return BadRequest(e.InnerException.Message);
             }
+
+            //try
+            //{
+
+            //    Presupuesto entidad = mapper.Map<Presupuesto>(entidadDTO); 
+
+            //    return await repositorio.Insert(entidad);
+            //}
+            //catch (Exception e)
+            //{
+
+            //    return BadRequest(e.Message);
+            //}
 
         }
 
-        [HttpPut]
+        [HttpPut("{Id:int}")]
 
-        public async Task<ActionResult> Put(int id, [FromBody] Presupuesto entidad)
+        public async Task<ActionResult> Put(int Id, [FromBody] CrearPresupuestoDTO entidadDTO)
         {
-            if (id != entidad.Id)
-            {
-                return BadRequest("Datos Incorrectos");
-            }
-            var zetta = await repositorio.SelectById(id);
-
-            if (zetta == null)
-            {
-                return NotFound("No existe el Presupuesto busacado");
-
-            }
-            //salen del DTO
-            zetta.Estado = entidad.Estado;
-            zetta.Insumos = entidad.Insumos;
-            zetta.ManodeObra = entidad.ManodeObra;
-            zetta.PrecioFinal = entidad.PrecioFinal;
-
             try
             {
-                await repositorio.Update(id, zetta);
-             
+
+                if (Id != entidadDTO.Id)
+                {
+                    return BadRequest("Datos Incorrectos");
+                }
+                Presupuesto entidad = mapper.Map<Presupuesto>(entidadDTO);
+                var zetta = await repositorio.Update(Id,entidad);
+
+                if (!zetta )
+                {
+                    return NotFound("No existe el Presupuesto busacado");
+
+                }
                 return Ok();
+
             }
+
+            
             catch (Exception e)
             {
 
@@ -108,11 +120,6 @@ namespace Proyecto_Zetta.Server.Controllers
             {
                 return NotFound($"El Presupuesto {id} no existe.");
             }
-            if(await repositorio.Delete(id))
-            {
-                return Ok();
-            }
-
             await repositorio.Delete(id);
             return Ok();
         }

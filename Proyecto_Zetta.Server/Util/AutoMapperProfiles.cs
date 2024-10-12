@@ -9,6 +9,8 @@ namespace Proyecto_Zetta.Server.Util
         public AutoMapperProfiles()
         {
             CreateMap<CrearPresupuestoDTO,Presupuesto>();
+
+            CreateMap<EditarPresupuestoDTO, Presupuesto>();
         }
     }
 }
