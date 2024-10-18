@@ -21,6 +21,7 @@ namespace Proyecto_Zetta.Shared.DTO
         [Required(ErrorMessage = "La mano de Obra es obligatoria.")]
         public long ManodeObra { get; set; }
 
+        [Required(ErrorMessage = "El Precio Final del presupuesto es obligatorio.")]
         public long PrecioFinal { get; set; }
     }
 }

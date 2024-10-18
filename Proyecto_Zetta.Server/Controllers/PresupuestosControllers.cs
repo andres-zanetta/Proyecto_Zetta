@@ -36,7 +36,7 @@ namespace Proyecto_Zetta.Server.Controllers
         public async Task<ActionResult<Presupuesto>>GetById(int id)
         {
 
-            var zetta = await repositorio.SelectById(id);
+            Presupuesto? zetta = await repositorio.SelectById(id);
             if(zetta== null)
             {
                 return NotFound("No se encontro el presupuesto indicado");
@@ -46,7 +46,7 @@ namespace Proyecto_Zetta.Server.Controllers
 
         [HttpPost]
 
-        public async Task<ActionResult<int>> Post( CrearPresupuestoDTO entidadDTO)
+        public async Task<ActionResult<int>> Post(CrearPresupuestoDTO entidadDTO)
         {
             
             try
