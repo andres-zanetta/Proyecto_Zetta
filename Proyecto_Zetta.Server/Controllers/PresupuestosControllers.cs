@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 using Proyecto_Zetta.DB.Data;
 using Proyecto_Zetta.DB.Data.Entity;
+using Proyecto_Zetta.Shared.DTO;
 
 namespace Proyecto_Zetta.Server.Controllers
 {
@@ -10,10 +13,12 @@ namespace Proyecto_Zetta.Server.Controllers
     public class PresupuestosControllers : ControllerBase
     {
         private readonly Context context;
+        private readonly IMapper mapper;
 
-        public PresupuestosControllers(Context context)
+        public PresupuestosControllers(Context context, IMapper mapper)
         {
             this.context = context;
+            this.mapper = mapper;
         }
 
         [HttpGet]//select
@@ -33,7 +38,7 @@ namespace Proyecto_Zetta.Server.Controllers
             return zetta;
         }
 
-        [HttpGet("existe/{id:int}")]
+        [HttpGet("Existe/{id:int}")]
 
         public async Task<ActionResult<bool>> Existe(int id)
         {
@@ -44,12 +49,18 @@ namespace Proyecto_Zetta.Server.Controllers
 
         [HttpPost]//insert
 
-        public async Task<ActionResult<int>>Post(Presupuesto entidad)
+        public async Task<ActionResult<int>>Post(CrearPresupuestoDTO entidadDTO)
         {
             try
             {
+                //Presupuesto entidad = new Presupuesto();
+                //entidad.Estado = entidadDTO.Estado;
+                //entidad.Insumos = entidadDTO.Insumos;
+                //entidad.ManodeObra = entidadDTO.ManodeObra;
+                //entidad.PrecioFinal = entidadDTO.PrecioFinal;
+
+                Presupuesto entidad = mapper.Map<Presupuesto>(entidadDTO);
                 context.Presupuestos.Add(entidad);
-             
                 await context.SaveChangesAsync();
                 return entidad.Id;
             }
