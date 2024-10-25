@@ -28,7 +28,7 @@ namespace Proyecto_Zetta.Server.Controllers
         }
 
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<Presupuesto>> Get(int id)
+        public async Task<ActionResult<Presupuesto>> GetById(int id)
         {
             var zetta = await context.Presupuestos.FirstOrDefaultAsync(x => x.Id == id);
             if (zetta == null)
