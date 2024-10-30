@@ -1,6 +1,6 @@
 ﻿using Proyecto_Zetta.DB.Data;
 
-namespace Proyecto_Zetta.Server.Repositorio
+namespace Proyecto_Zetta.Server.repositorio
 {
     public interface IRepositorio<E> where E : class, IEntityBase
     {

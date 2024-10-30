@@ -5,7 +5,7 @@ using Proyecto_Zetta.DB.Data;
 using Proyecto_Zetta.DB.Data.Entity;
 using Proyecto_Zetta.Shared.DTO;
 
-namespace Proyecto_Zetta.Server.Repositorio
+namespace Proyecto_Zetta.Server.repositorio
 {
     public class Repositorio<E> : IRepositorio<E> 
         where E : class, IEntityBase //este repo trabaja sobre una entidad
@@ -89,7 +89,6 @@ namespace Proyecto_Zetta.Server.Repositorio
                 return false;
 
             }
-
 
             context.Set<E>().Remove(zetta);
             await context.SaveChangesAsync();
