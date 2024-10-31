@@ -4,20 +4,20 @@ using System.Text.Json;
 
 namespace Proyecto_Zetta.Client.Servicios
 {
-    public class HttpServicio
+    public class HttpServicio : IHttpServicio
     {
         private readonly HttpClient http;
 
-        public  HttpServicio(HttpClient http)
+        public HttpServicio(HttpClient http)
         {
             this.http = http;
         }
-        
+
         public async Task<HttpRespuesta<T>> Get<T>(string url)
         {
             var response = await http.GetAsync(url);
 
-            if(response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
                 var respuesta = await DesSerializar<T>(response);
                 return new HttpRespuesta<T>(respuesta, false, response);

@@ -1,0 +1,32 @@
+﻿@page "/api/Presupuestos"
+@inject IHttpServicio http
+@using Proyecto_Zetta.DB.Data.Entity
+
+<h3>ListaPresupuesto</h3>
+<br />
+<table>
+    <tr>
+        <th>Estado</th>
+        <br />
+        <th>Insumos</th>
+        <br />
+        <th>ManosdeObra</th>
+        <br />
+        <th>PrecioFinal</th>
+    </tr>
+    @foreach(var item in listaPresupuestos)
+    {
+        <tr>
+            <td>@item.Estado</td>
+            <td>@item.Insumos</td>
+            <td>@item.ManodeObra</td>
+            <td>@item.PrecioFinal</td>
+        </tr>
+    }
+
+</table>
+
+@code {
+    List<Presupuesto> listaPresupuestos;
+
+}
