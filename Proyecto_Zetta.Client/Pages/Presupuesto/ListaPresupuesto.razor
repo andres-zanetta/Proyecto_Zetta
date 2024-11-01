@@ -28,5 +28,24 @@
 
 @code {
     List<Presupuesto> listaPresupuestos;
+    string Mensaje = "";
 
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        await Leer();
+    }
+
+    private async Task Leer()
+    {
+        var respuesta = await http.Get<List<Presupuesto>>("api/Presupuestos");
+        if(!respuesta.Error)
+        {
+            listaPresupuestos = respuesta.Respuesta;
+        }
+        else
+        {
+            Mensaje = "Error no se pudo leer el presupuesto";
+        }
+    }
 }
