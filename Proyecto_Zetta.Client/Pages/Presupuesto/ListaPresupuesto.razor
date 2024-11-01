@@ -4,6 +4,8 @@
 
 <h3>ListaPresupuesto</h3>
 <br />
+<a class="btn btn-primary" href="/api/Presupuestos/crear">Nuevo Presupuesto</a>
+<br />
 <table>
     <tr>
         <th>Estado</th>
@@ -14,20 +16,46 @@
         <br />
         <th>PrecioFinal</th>
     </tr>
-    @foreach(var item in listaPresupuestos)
+    @if(Mensaje =="")
     {
-        <tr>
-            <td>@item.Estado</td>
-            <td>@item.Insumos</td>
-            <td>@item.ManodeObra</td>
-            <td>@item.PrecioFinal</td>
-        </tr>
+    
+        @if (listaPresupuestos == null)
+        {
+            <p>Buscando...</p>
+        }
+        else if(listaPresupuestos.Count==0)
+        {
+            <p>No existen los Presupuestos...</p>
+        }
+        else
+        {
+            @foreach (var item in listaPresupuestos)
+            {
+                <tr>
+                    <td>@item.Estado</td>
+                    <td>@item.Insumos</td>
+                    <td>@item.ManodeObra</td>
+                    <td>@item.PrecioFinal</td>
+                </tr>
+            }
+            
+        }
+
+            
+        }
+
     }
+    else
+    {
+    <p> Error: @Mensaje</p>
+    }
+    
 
 </table>
 
 @code {
     List<Presupuesto> listaPresupuestos;
+
     string Mensaje = "";
 
     protected override async Task OnInitializedAsync()
@@ -45,7 +73,7 @@
         }
         else
         {
-            Mensaje = "Error no se pudo leer el presupuesto";
+            Mensaje = await respuesta.ObtenerError();
         }
     }
 }
