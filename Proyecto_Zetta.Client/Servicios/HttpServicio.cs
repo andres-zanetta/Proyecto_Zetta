@@ -1,4 +1,5 @@
 ﻿
+using System.Text;
 using System.Text.Json;
 
 
@@ -28,6 +29,26 @@ namespace Proyecto_Zetta.Client.Servicios
             }
 
 
+        }
+
+        public async Task<HttpRespuesta<object>> Post<T>(string url, T entidad)
+        {
+            var enviarJson = JsonSerializer.Serialize(entidad);
+
+            var enviarContent = new StringContent(enviarJson,
+                                Encoding.UTF8,
+                                "application/json");
+
+            var response = await http.PostAsync(url, enviarContent);
+            if (response.IsSuccessStatusCode)
+            {
+                var respuesta = await DesSerializar<object>(response);
+                return new HttpRespuesta<object>(respuesta, false, response);
+            }
+            else
+            {
+                return new HttpRespuesta<object>(default, true, response);
+            }
         }
 
         private async Task<T?> DesSerializar<T>(HttpResponseMessage response)
