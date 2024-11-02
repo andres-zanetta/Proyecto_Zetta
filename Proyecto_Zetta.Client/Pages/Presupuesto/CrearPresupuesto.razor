@@ -1,0 +1,64 @@
+﻿@page "/api/Presupuestos/crear"
+@inject IHttpServicio http
+@inject NavigationManager navigationManager
+<h3>Nuevo Presupuesto</h3>
+
+ <EditForm Model="presupuesto" OnInvalidSubmit="Grabar">
+    <DataAnnotationsValidator />
+    <div class="form-group">
+        <label>Estado</label>
+        <div>
+            <InputText class="form-control" @bind-Value= "@presupuesto.Estado"/>
+            <ValidationMessage For="@(()=> presupuesto.Estado)"/>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Insumos</label>
+        <div>
+            <InputText class=" form-control" @bind-Value="@presupuesto.Insumos" />
+            <ValidationMessage For="@(()=> presupuesto.Insumos)" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>ManodeObra</label>
+        <div>
+            <InputText class=" form-control" @bind-Value="@presupuesto.ManodeObra" />
+            <ValidationMessage For="@(()=> presupuesto.ManodeObra)" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>PrecioFinal</label>
+        <div>
+            <InputText class=" form-control" @bind-Value="@presupuesto.PrecioFinal" />
+            <ValidationMessage For="@(()=> presupuesto.PrecioFinal)" />
+        </div>
+    </div>
+    <br />
+    <button class="btn btn-primary" type="submit">Crear</button>
+    <button class="btn btn-secondary" @onclick="Cancelar">Cancelar</button> 
+
+ </EditForm> 
+
+
+
+@code {
+    private Presupuesto presupuesto = new Presupuesto();
+
+    private async Task Grabar()
+    {
+        var httpRespuesta = await http.Post<Presupuesto>("api/Presupuestos", presupuesto);
+        if(httpRespuesta.Error)
+        {
+            var body = httpRespuesta.HttpResponseMessage;
+        }
+        navigationManager.NavigateTo("api/Presupuestos");
+    }
+
+    private void Cancelar()
+    {
+        navigationManager.NavigateTo("/api/Presupuestos");
+    }
+}
